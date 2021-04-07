@@ -64,11 +64,12 @@ const images = [
   },
 ];
 
-console.log(createImagesCardsMarkup(images));
+//Создание и рендер разметки по массиву данных и предоставленному шаблону.
 
-const galleryContainerEl = document.querySelector(".js-gallery");
+const galleryContainerEl = document.querySelector("ul.js-gallery");
 const cardsMarkup = createImagesCardsMarkup(images);
 galleryContainerEl.insertAdjacentHTML('beforeend', cardsMarkup);
+console.log(cardsMarkup);
 
 function createImagesCardsMarkup (images) {
   return images.map(({preview, original, description}) => {
@@ -92,3 +93,30 @@ function createImagesCardsMarkup (images) {
   console.log(markup);
 }
 
+//Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
+
+galleryContainerEl.addEventListener('click', onImageClick);
+console.log(galleryContainerEl);
+
+//Открытие модального окна по клику на элементе галереи.
+//Подмена значения атрибута src элемента img.lightbox__image.
+
+const modalContainerEl = document.querySelector('.js-lightbox');
+const imageInModalEl = document.querySelector('.lightbox__image');
+
+function onImageClick (event) {
+  event.preventDefault();
+  if (event.target.nodeName !== 'IMG'){
+    return;
+  }
+  modalContainerEl.classList.add('is-open');
+  imageInModalEl.src = event.target.dataset.source;
+  console.log(imageInModalEl.src);
+}
+
+//Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"].
+
+
+//Очистка значения атрибута src элемента img.lightbox__image. Это необходимо для того,
+// чтобы при следующем открытии модального окна, 
+// пока грузится изображение, мы не видели предыдущее.
